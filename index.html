@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f8f4">
+  <meta name="description" content="江戸川の風、歴史ある寺社、みずみずしい梨。千葉県市川市の魅力と、とっておきのお出かけスポットをご紹介します。">
+  <title>いちかわ日和｜千葉県市川市の魅力ガイド</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700;800&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f8f8f4;
+      --white: #fff;
+      --ink: #20342d;
+      --muted: #737d74;
+      --line: #e4e6de;
+      --green: #496d53;
+      --green-dark: #294536;
+      --orange: #e5875b;
+      --pale: #edf1e9;
+      --sans: "DM Sans", "Noto Sans JP", sans-serif;
+      --serif: "Noto Serif JP", "Yu Mincho", serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 85px; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; }
+    .wrap { width: min(1160px, calc(100% - 72px)); margin-inline: auto; }
+
+    .quiz-gate {
+      position: fixed;
+      z-index: 20;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      overflow-y: auto;
+      background: radial-gradient(ellipse at 50% 35%, #fff 0%, var(--paper) 72%);
+    }
+    .quiz-gate[hidden] { display: none; }
+    .quiz-card { width: min(100%, 460px); padding: 38px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 18px 60px rgba(32, 52, 45, .08); }
+    .quiz-brand { display: flex; justify-content: center; margin-bottom: 24px; }
+    .quiz-brand .brand-mark { width: 44px; height: 44px; font-size: 21px; }
+    .quiz-card .section-kicker { text-align: center; }
+    .quiz-card h1 { margin: 0; text-align: center; font-family: var(--serif); font-size: 25px; font-weight: 500; letter-spacing: .06em; }
+    .quiz-copy { margin: 10px 0 20px; color: var(--muted); text-align: center; font-size: 11px; line-height: 1.9; }
+    .quiz-question { width: 100%; margin: 0; padding: 0; border: 0; }
+    .quiz-question legend { width: 100%; margin-bottom: 12px; font-size: 12px; font-weight: 600; line-height: 1.8; }
+    .quiz-options { display: grid; gap: 9px; }
+    .quiz-option { display: flex; min-height: 48px; align-items: center; gap: 12px; padding: 0 14px; border: 1px solid var(--line); border-radius: 3px; cursor: pointer; font-size: 12px; transition: border-color .2s, background .2s; }
+    .quiz-option:hover { background: var(--pale); }
+    .quiz-option:has(input:checked) { background: var(--pale); border-color: var(--green); }
+    .quiz-option input { width: 17px; height: 17px; margin: 0; accent-color: var(--green); }
+    .quiz-option:focus-within { outline: 2px solid var(--orange); outline-offset: 2px; }
+    .quiz-button { width: 100%; min-height: 48px; margin-top: 16px; color: var(--white); background: var(--green); border: 0; border-radius: 3px; font: inherit; font-size: 12px; cursor: pointer; transition: background .2s, opacity .2s; }
+    .quiz-button:hover:not(:disabled) { background: var(--green-dark); }
+    .quiz-button:disabled { opacity: .42; cursor: not-allowed; }
+    .quiz-feedback { margin: 12px 0 0; font-size: 11px; line-height: 1.8; }
+    .quiz-feedback[hidden] { display: none; }
+    .quiz-feedback[data-correct="true"] { color: var(--green); }
+    .quiz-feedback[data-correct="false"] { color: #a74437; }
+    .quiz-footnote { margin: 15px 0 0; color: var(--muted); text-align: center; font-size: 9px; line-height: 1.8; }
+    #site-content[aria-hidden="true"] { visibility: hidden; }
+
+    .site-header {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      background: rgba(248, 248, 244, .94);
+      border-bottom: 1px solid rgba(32, 52, 45, .08);
+      backdrop-filter: blur(14px);
+    }
+    .header-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; }
+    .brand-mark { width: 38px; height: 38px; display: grid; place-items: center; color: var(--white); background: var(--green); border-radius: 50% 50% 48% 8px; font-family: var(--serif); font-size: 19px; }
+    .brand-copy { display: grid; gap: 2px; }
+    .brand-copy strong { font-family: var(--serif); font-size: 17px; font-weight: 600; letter-spacing: .07em; }
+    .brand-copy small { color: var(--muted); font-family: var(--sans); font-size: 9px; letter-spacing: .18em; }
+    .nav { display: flex; align-items: center; gap: clamp(18px, 3vw, 38px); font-size: 12px; font-weight: 500; }
+    .nav a { transition: color .2s ease; }
+    .nav a:hover { color: var(--orange); }
+    .nav .nav-cta { padding: 11px 17px; color: var(--white); background: var(--green); border-radius: 3px; }
+    .nav .nav-cta:hover { color: var(--white); background: var(--green-dark); }
+
+    .hero {
+      position: relative;
+      min-height: min(700px, calc(100svh - 76px));
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      color: var(--white);
+      background: #394f42 url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=88") center 48% / cover no-repeat;
+      isolation: isolate;
+    }
+    .hero::before { position: absolute; z-index: -1; inset: 0; content: ""; background: linear-gradient(90deg, rgba(22, 43, 33, .77) 0%, rgba(22, 43, 33, .46) 47%, rgba(22, 43, 33, .06) 100%); }
+    .hero-content { padding-block: 100px; animation: appear .8s both; }
+    .eyebrow { display: flex; align-items: center; gap: 11px; margin: 0 0 25px; color: rgba(255,255,255,.9); font-size: 10px; font-weight: 600; letter-spacing: .2em; }
+    .eyebrow::before { width: 26px; height: 1px; content: ""; background: #f0ad79; }
+    .hero h1 { margin: 0; font-family: var(--serif); font-size: clamp(48px, 7vw, 84px); font-weight: 500; line-height: 1.4; letter-spacing: .08em; }
+    .hero h1 span { color: #ffcf9f; }
+    .hero-copy { margin: 19px 0 34px; color: rgba(255,255,255,.88); font-family: var(--serif); font-size: 14px; line-height: 2.2; letter-spacing: .08em; }
+    .hero-link { display: inline-flex; min-height: 48px; align-items: center; gap: 25px; padding: 0 18px; border: 1px solid rgba(255,255,255,.68); border-radius: 3px; font-size: 11px; letter-spacing: .08em; transition: background .2s, color .2s; }
+    .hero-link:hover { color: var(--ink); background: var(--white); }
+    .hero-link span { font-size: 17px; }
+    .hero-side-note { position: absolute; right: 34px; bottom: 34px; color: rgba(255,255,255,.76); font-size: 9px; letter-spacing: .18em; writing-mode: vertical-rl; }
+    .hero-scroll { position: absolute; bottom: 0; left: max(36px, calc((100% - 1160px) / 2)); display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,.78); font-size: 9px; letter-spacing: .18em; writing-mode: vertical-rl; }
+    .hero-scroll::after { width: 1px; height: 42px; content: ""; background: rgba(255,255,255,.6); }
+
+    .intro { padding-block: 72px 76px; text-align: center; }
+    .section-kicker { margin: 0 0 14px; color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
+    .intro h2, .section-title { margin: 0; font-family: var(--serif); font-size: clamp(25px, 3vw, 36px); font-weight: 500; line-height: 1.8; letter-spacing: .07em; }
+    .intro-copy { max-width: 660px; margin: 14px auto 0; color: var(--muted); font-family: var(--serif); font-size: 12px; line-height: 2.25; }
+    .image-notice { margin: 14px 0 0; color: var(--muted); font-size: 10px; line-height: 1.8; }
+    .intro-note { display: inline-flex; align-items: center; gap: 11px; margin-top: 26px; color: var(--green); font-size: 10px; letter-spacing: .08em; }
+    .intro-note::before, .intro-note::after { width: 25px; height: 1px; content: ""; background: #cbd4c8; }
+
+    .section { padding-block: 96px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 35px; }
+    .section-heading .section-kicker { margin-bottom: 9px; }
+    .section-heading-copy { max-width: 370px; margin: 0; color: var(--muted); font-size: 11px; line-height: 2; }
+    .spots { background: #f0f2ec; }
+    .spot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .spot-card { min-width: 0; overflow: hidden; background: var(--white); }
+    .spot-image { position: relative; aspect-ratio: 1.48 / 1; overflow: hidden; background: #dce1d7; }
+    .spot-image img { height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+    .spot-card:hover .spot-image img { transform: scale(1.045); }
+    .spot-number { position: absolute; bottom: 13px; left: 15px; color: rgba(255,255,255,.92); font-size: 10px; letter-spacing: .18em; text-shadow: 0 1px 8px rgba(0,0,0,.4); }
+    .spot-copy { padding: 20px 21px 23px; }
+    .spot-type { margin: 0 0 8px; color: var(--green); font-size: 9px; font-weight: 600; letter-spacing: .13em; }
+    .spot-copy h3 { margin: 0; font-family: var(--serif); font-size: 18px; font-weight: 600; letter-spacing: .04em; }
+    .spot-copy > p:last-child { margin: 10px 0 0; color: var(--muted); font-size: 11px; line-height: 1.95; }
+
+    .pear { overflow: hidden; background: var(--green-dark); color: var(--white); }
+    .pear-inner { display: grid; grid-template-columns: 1.03fr .97fr; align-items: center; gap: clamp(38px, 8vw, 100px); }
+    .pear-image { position: relative; aspect-ratio: 1.05 / 1; }
+    .pear-image img { width: 100%; height: 100%; object-fit: cover; }
+    .pear-image::after { position: absolute; inset: 14px; content: ""; border: 1px solid rgba(255,255,255,.4); pointer-events: none; }
+    .pear-copy .section-kicker { color: #f5bb8c; }
+    .pear-copy h2 { margin: 0; font-family: var(--serif); font-size: clamp(27px, 3.2vw, 39px); font-weight: 500; line-height: 1.7; letter-spacing: .07em; }
+    .pear-copy > p:not(.section-kicker) { max-width: 420px; margin: 18px 0 0; color: rgba(255,255,255,.77); font-size: 12px; line-height: 2.2; }
+    .pear-facts { display: flex; gap: 28px; margin-top: 29px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.23); }
+    .pear-fact { display: grid; gap: 7px; }
+    .pear-fact strong { font-family: var(--serif); font-size: 14px; font-weight: 500; letter-spacing: .05em; }
+    .pear-fact span { color: rgba(255,255,255,.58); font-size: 9px; letter-spacing: .1em; }
+
+    .daytrip { padding-block: 92px; }
+    .daytrip-inner { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(40px, 8vw, 100px); align-items: start; }
+    .daytrip-heading { position: sticky; top: 116px; }
+    .daytrip-heading .section-title { font-size: clamp(25px, 3vw, 34px); }
+    .daytrip-heading > p:last-child { max-width: 300px; margin: 14px 0 0; color: var(--muted); font-size: 11px; line-height: 2; }
+    .timeline { margin: 0; padding: 0; list-style: none; }
+    .timeline li { display: grid; grid-template-columns: 67px 1fr; gap: 20px; padding: 0 0 26px; }
+    .timeline li + li { padding-top: 25px; border-top: 1px solid var(--line); }
+    .timeline time { padding-top: 3px; color: var(--green); font-size: 10px; font-weight: 600; letter-spacing: .08em; }
+    .timeline h3 { margin: 0; font-family: var(--serif); font-size: 16px; font-weight: 600; }
+    .timeline p { margin: 6px 0 0; color: var(--muted); font-size: 11px; line-height: 1.9; }
+
+    .access { padding-block: 71px; background: var(--pale); }
+    .access-inner { display: flex; align-items: center; justify-content: space-between; gap: 35px; }
+    .access-title { display: flex; align-items: center; gap: 17px; }
+    .access-icon { width: 44px; height: 44px; display: grid; flex: 0 0 auto; place-items: center; color: var(--white); background: var(--green); border-radius: 50%; }
+    .access-icon svg { width: 20px; height: 20px; }
+    .access-title .section-kicker { margin-bottom: 3px; }
+    .access-title h2 { margin: 0; font-family: var(--serif); font-size: 21px; font-weight: 500; }
+    .access-detail { display: flex; flex-wrap: wrap; gap: 14px 32px; color: var(--muted); font-size: 11px; line-height: 1.8; }
+    .access-detail strong { color: var(--ink); font-weight: 600; }
+    .map-link { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 13px; padding: 12px 16px; border: 1px solid #c9d2c7; border-radius: 3px; font-size: 10px; transition: background .2s, color .2s; }
+    .map-link:hover { color: var(--white); background: var(--green); }
+    .map-link span { font-size: 15px; }
+
+    .closing { padding-block: 79px 75px; text-align: center; }
+    .closing .section-kicker { margin-bottom: 12px; }
+    .closing h2 { margin: 0; font-family: var(--serif); font-size: clamp(23px, 3vw, 31px); font-weight: 500; letter-spacing: .08em; }
+    .closing p:last-of-type { margin: 13px 0 0; color: var(--muted); font-family: var(--serif); font-size: 11px; line-height: 2; }
+    footer { border-top: 1px solid var(--line); }
+    .footer-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; color: var(--muted); font-size: 9px; letter-spacing: .06em; }
+    .footer-inner .brand-copy strong { color: var(--ink); font-size: 13px; }
+    .footer-inner .brand-copy small { font-size: 8px; }
+    .footer-inner .brand-mark { width: 30px; height: 30px; font-size: 15px; }
+
+    @keyframes appear { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 40px, 560px); }
+      .quiz-card { padding: 30px 24px; }
+      .header-inner { min-height: 67px; gap: 12px; }
+      .brand-mark { width: 34px; height: 34px; font-size: 17px; }
+      .brand-copy strong { font-size: 15px; }
+      .nav { gap: 15px; font-size: 10px; }
+      .nav .nav-cta { padding: 9px 11px; }
+      .hero { min-height: min(630px, calc(90svh - 67px)); background-position: 58% center; }
+      .hero::before { background: linear-gradient(90deg, rgba(22,43,33,.76), rgba(22,43,33,.42) 82%, rgba(22,43,33,.2)); }
+      .hero-content { padding-block: 75px; }
+      .hero h1 { font-size: clamp(46px, 10vw, 66px); }
+      .hero-copy { font-size: 12px; }
+      .hero-side-note { right: 17px; bottom: 22px; }
+      .hero-scroll { left: 20px; }
+      .intro { padding-block: 58px 62px; }
+      .intro-copy { font-size: 11px; }
+      .section { padding-block: 70px; }
+      .section-heading { display: block; margin-bottom: 25px; }
+      .section-heading-copy { margin-top: 11px; }
+      .spot-grid { grid-template-columns: 1fr; gap: 18px; }
+      .spot-card { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; }
+      .spot-image { height: 100%; min-height: 160px; aspect-ratio: auto; }
+      .spot-copy { padding: 17px; }
+      .spot-copy h3 { font-size: 16px; }
+      .spot-copy > p:last-child { font-size: 10px; }
+      .pear-inner { grid-template-columns: 1fr; gap: 30px; }
+      .pear-image { aspect-ratio: 1.35 / 1; }
+      .pear-copy h2 { font-size: 30px; }
+      .daytrip { padding-block: 70px; }
+      .daytrip-inner { grid-template-columns: 1fr; gap: 28px; }
+      .daytrip-heading { position: static; }
+      .daytrip-heading > p:last-child { max-width: 440px; }
+      .access { padding-block: 48px; }
+      .access-inner { align-items: flex-start; flex-direction: column; gap: 21px; }
+      .access-detail { gap: 10px 22px; }
+      .closing { padding-block: 62px 56px; }
+    }
+    @media (max-width: 420px) {
+      .wrap { width: calc(100% - 32px); }
+      .header-inner { gap: 8px; }
+      .brand { gap: 7px; }
+      .brand-mark { width: 30px; height: 30px; font-size: 15px; }
+      .brand-copy strong { font-size: 13px; }
+      .brand-copy small { font-size: 7px; }
+      .nav { gap: 9px; font-size: 9px; }
+      .nav .nav-cta { padding: 8px; }
+      .nav a:first-child { display: none; }
+      .hero h1 { font-size: 45px; }
+      .spot-card { grid-template-columns: .8fr 1.2fr; }
+      .spot-copy { padding: 13px; }
+      .spot-copy h3 { font-size: 14px; }
+      .spot-image { min-height: 145px; }
+      .pear-facts { gap: 18px; }
+      .timeline li { grid-template-columns: 56px 1fr; gap: 12px; }
+      .footer-inner { min-height: 67px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="quiz-gate" id="quiz-gate" role="dialog" aria-modal="true" aria-labelledby="quiz-title">
+    <div class="quiz-card">
+      <a class="brand quiz-brand" href="#top" aria-label="いちかわ日和">
+        <span class="brand-mark" aria-hidden="true">市</span>
+      </a>
+      <p class="section-kicker">Welcome to Ichikawa</p>
+      <h1 id="quiz-title">市川の名産品クイズ</h1>
+      <p class="quiz-copy">クイズに正解すると、ホームページをご覧いただけます。</p>
+      <form id="quiz-form">
+        <fieldset class="quiz-question">
+          <legend>市川市を代表する果物として知られる名産品はどれ？</legend>
+          <div class="quiz-options">
+            <label class="quiz-option"><input type="radio" name="answer" value="strawberry"><span>いちご</span></label>
+            <label class="quiz-option"><input type="radio" name="answer" value="pear"><span>梨</span></label>
+            <label class="quiz-option"><input type="radio" name="answer" value="peach"><span>もも</span></label>
+            <label class="quiz-option"><input type="radio" name="answer" value="grape"><span>ぶどう</span></label>
+          </div>
+        </fieldset>
+        <p class="quiz-feedback" id="quiz-feedback" role="status" aria-live="polite" hidden></p>
+        <button class="quiz-button" id="quiz-submit" type="submit" disabled>答え合わせ</button>
+      </form>
+      <p class="quiz-footnote">市川市の名産品「市川の梨」にちなんだクイズです。</p>
+    </div>
+  </section>
+  <div id="site-content" inert aria-hidden="true">
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top" aria-label="いちかわ日和 トップ">
+        <span class="brand-mark" aria-hidden="true">市</span>
+        <span class="brand-copy"><strong>いちかわ日和</strong><small>ICHIKAWA, CHIBA</small></span>
+      </a>
+      <nav class="nav" aria-label="メインナビゲーション">
+        <a href="#spots">見どころ</a>
+        <a href="#pear">市川の梨</a>
+        <a href="#daytrip">まち歩き</a>
+        <a class="nav-cta" href="#access">アクセス <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" tabindex="-1">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-content">
+        <p class="eyebrow">A little trip to Ichikawa</p>
+        <h1 id="hero-title">東京のとなりに、<br><span>いい日</span>がある。</h1>
+        <p class="hero-copy">川辺を歩いて、歴史にふれて、旬を味わう。<br>ちょっと出かけたくなる、市川の魅力をご案内。</p>
+        <a class="hero-link" href="#spots">市川の見どころをめぐる <span aria-hidden="true">↓</span></a>
+      </div>
+      <span class="hero-side-note" aria-hidden="true">CHIBA · JAPAN</span>
+      <span class="hero-scroll" aria-hidden="true">SCROLL</span>
+    </section>
+
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="wrap">
+        <p class="section-kicker">Welcome to Ichikawa</p>
+        <h2 id="intro-title">いつもの毎日に、ちいさな旅を。</h2>
+        <p class="intro-copy">千葉県の北西部、江戸川をはさんで東京と向かい合う市川市。<br>駅前のにぎわいから少し歩けば、季節の自然や寺社の風景に出会えます。<br>近くて、奥深い。そんな市川の好きなところを見つけてみませんか。</p>
+        <p class="image-notice">※掲載している画像はイメージです。実際の風景・施設とは異なる場合があります。</p>
+        <span class="intro-note">川と緑と、歴史のあるまち</span>
+      </div>
+    </section>
+
+    <section class="section spots" id="spots" aria-labelledby="spots-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Find your favorite place</p>
+            <h2 class="section-title" id="spots-title">市川で、どこへ行こう。</h2>
+          </div>
+          <p class="section-heading-copy">心静まるお寺から、自然の中の動植物園まで。<br>気分に合わせて立ち寄りたい、とっておきの場所。</p>
+        </div>
+        <div class="spot-grid">
+          <article class="spot-card">
+            <div class="spot-image">
+              <img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=900&q=82" alt="緑の木々に囲まれた歴史ある境内のイメージ" loading="lazy">
+              <span class="spot-number">01 / HISTORY</span>
+            </div>
+            <div class="spot-copy">
+              <p class="spot-type">歴史と文化</p>
+              <h3>中山法華経寺</h3>
+              <p>鎌倉時代に開かれた名刹。五重塔などの歴史ある建物と、季節ごとに表情を変える境内をゆっくり散策。</p>
+            </div>
+          </article>
+          <article class="spot-card">
+            <div class="spot-image">
+              <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=82" alt="水辺の風景と緑が広がる公園のイメージ" loading="lazy">
+              <span class="spot-number">02 / NATURE</span>
+            </div>
+            <div class="spot-copy">
+              <p class="spot-type">自然と眺め</p>
+              <h3>里見公園</h3>
+              <p>江戸川沿いの高台に広がる公園。春の桜やバラ園、眺望を楽しみながら、のんびりひと休み。</p>
+            </div>
+          </article>
+          <article class="spot-card">
+            <div class="spot-image">
+              <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=82" alt="木漏れ日が差し込む緑豊かな森のイメージ" loading="lazy">
+              <span class="spot-number">03 / ANIMALS</span>
+            </div>
+            <div class="spot-copy">
+              <p class="spot-type">家族でおでかけ</p>
+              <h3>市川市動植物園</h3>
+              <p>レッサーパンダや動物たちに会える、緑に囲まれたスポット。植物園やミニ鉄道も楽しめます。</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pear" id="pear" aria-labelledby="pear-title">
+      <div class="wrap pear-inner">
+        <div class="pear-image">
+          <img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=1100&q=85" alt="みずみずしい実りを感じる果樹園のイメージ" loading="lazy">
+        </div>
+        <div class="pear-copy">
+          <p class="section-kicker">A taste of Ichikawa</p>
+          <h2 id="pear-title">みずみずしい季節を、<br>市川の梨と。</h2>
+          <p>市川を代表する味覚といえば、太陽をたっぷり浴びた梨。市内には梨園が点在し、夏から秋にかけて直売所や梨狩りで旬のおいしさに出会えます。ひと口かじれば、しゃきっと甘い果汁が広がります。</p>
+          <div class="pear-facts">
+            <div class="pear-fact"><strong>夏〜秋</strong><span>梨の季節</span></div>
+            <div class="pear-fact"><strong>市内各地</strong><span>梨園・直売所</span></div>
+            <div class="pear-fact"><strong>旬の味覚</strong><span>市川のおみやげ</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="daytrip" id="daytrip" aria-labelledby="daytrip-title">
+      <div class="wrap daytrip-inner">
+        <div class="daytrip-heading">
+          <p class="section-kicker">A day in Ichikawa</p>
+          <h2 class="section-title" id="daytrip-title">市川を楽しむ、<br>一日の過ごし方。</h2>
+          <p>予定を詰めこまなくても大丈夫。寄り道しながら、自分のペースで楽しむ市川散歩。</p>
+        </div>
+        <ol class="timeline">
+          <li>
+            <time datetime="09:30">MORNING</time>
+            <div><h3>中山のまちを歩く</h3><p>門前の雰囲気を楽しみながら、中山法華経寺へ。参道を歩いて歴史にふれる朝。</p></div>
+          </li>
+          <li>
+            <time datetime="12:00">LUNCH</time>
+            <div><h3>お気に入りのお店でひと休み</h3><p>市川・本八幡エリアのカフェや飲食店で、街の人に親しまれるランチを。</p></div>
+          </li>
+          <li>
+            <time datetime="14:00">AFTERNOON</time>
+            <div><h3>江戸川の風を感じる</h3><p>里見公園へ足をのばして、景色を眺めたり、緑の中を散策したり。</p></div>
+          </li>
+          <li>
+            <time datetime="16:00">SOUVENIR</time>
+            <div><h3>旬の梨をおみやげに</h3><p>季節に合わせて梨園や直売所に立ち寄り、市川のおいしさを持ち帰ろう。</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="access" id="access" aria-labelledby="access-title">
+      <div class="wrap access-inner">
+        <div class="access-title">
+          <span class="access-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16.5V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8.5"/><path d="M4 12h16M7 17h.01M17 17h.01M6 17h12M7 6l1-3h8l1 3"/></svg>
+          </span>
+          <div>
+            <p class="section-kicker">Easy to get there</p>
+            <h2 id="access-title">東京から、気軽に市川へ。</h2>
+          </div>
+        </div>
+        <div class="access-detail">
+          <span><strong>電車で</strong> 東京駅からJR総武快速線で市川駅へ</span>
+          <span><strong>おもな駅</strong> 市川・本八幡・行徳</span>
+        </div>
+        <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=%E5%8D%83%E8%91%89%E7%9C%8C%E5%B8%82%E5%B7%9D%E5%B8%82" target="_blank" rel="noopener noreferrer">市川市を地図で見る <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <section class="closing" aria-labelledby="closing-title">
+      <p class="section-kicker">See you in Ichikawa</p>
+      <h2 id="closing-title">次のお休みは、市川へ寄り道。</h2>
+      <p>いつもの景色のすぐそばに、まだ知らないお気に入りが待っています。</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <a class="brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">市</span>
+        <span class="brand-copy"><strong>いちかわ日和</strong><small>ICHIKAWA, CHIBA</small></span>
+      </a>
+      <span>千葉県市川市の魅力紹介サイト</span>
+      <span>© 2026 いちかわ日和</span>
+    </div>
+  </footer>
+  </div>
+  <script>
+    const quizGate = document.getElementById("quiz-gate");
+    const quizForm = document.getElementById("quiz-form");
+    const quizSubmit = document.getElementById("quiz-submit");
+    const quizFeedback = document.getElementById("quiz-feedback");
+    const siteContent = document.getElementById("site-content");
+    const quizAnswers = Array.from(quizForm.querySelectorAll('input[name="answer"]'));
+
+    quizAnswers.forEach((answer) => {
+      answer.addEventListener("change", () => {
+        quizSubmit.disabled = false;
+        quizFeedback.hidden = true;
+      });
+    });
+
+    quizForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const selectedAnswer = quizAnswers.find((answer) => answer.checked);
+      if (!selectedAnswer) {
+        return;
+      }
+
+      if (selectedAnswer.value !== "pear") {
+        quizFeedback.textContent = "残念、違います。市川市の名産品をもう一度考えてみてください。";
+        quizFeedback.dataset.correct = "false";
+        quizFeedback.hidden = false;
+        return;
+      }
+
+      quizGate.hidden = true;
+      siteContent.removeAttribute("inert");
+      siteContent.removeAttribute("aria-hidden");
+      document.getElementById("top").focus();
+    });
+  </script>
+</body>
+</html>
